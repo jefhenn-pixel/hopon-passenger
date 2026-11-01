@@ -124,6 +124,7 @@
     </main>
 
     <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby7zCbizuEK9YaolkT_s5G6w1hAzzyyx5bmRs0kZ0AvKR_aCMY-yCgGzT_/exec";
         let calculatedFare = 30;
         let isPresetOverride = false;
 
@@ -182,7 +183,26 @@
                 return;
             }
 
-            // Save ride to local storage for the dispatch board
+            const rideData = {
+                name: name,
+                phone: "N/A",
+                pickup: pickup,
+                dropoff: dest,
+                distance: distance,
+                fare: calculatedFare
+            };
+
+            // Send booking to Google Sheet API backend
+            if (SCRIPT_URL) {
+                fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(rideData)
+                }).catch(err => console.error("Error posting to sheet:", err));
+            }
+
+            // Save ride to local storage for the dispatch board fallback
             let rides = JSON.parse(localStorage.getItem('hopon_rides') || '[]');
             rides.push({
                 id: Date.now(),
@@ -196,6 +216,14 @@
             localStorage.setItem('hopon_rides', JSON.stringify(rides));
 
             alert('Booking sent straight to dispatch!');
+
+            // Clear form fields
+            document.getElementById('passengerName').value = '';
+            document.getElementById('pickupAddr').value = '';
+            document.getElementById('destAddr').value = '';
+            document.getElementById('tripDistance').value = '';
+            calculatedFare = 30;
+            document.getElementById('fareDisplay').innerText = "R30.00";
         }
     </script>
 
