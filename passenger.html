@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HopOn Local - Book a Ride</title>
+    
+    <!-- Mobile App & PWA Settings -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="HopOn Passenger">
+    <meta name="theme-color" content="#f59e0b">
+    
+    <!-- Custom Taxi / Car Icon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23111827'/><path d='M20 58 C20 48, 30 42, 50 42 C70 42, 80 48, 80 58 L82 70 C82 74, 78 78, 74 78 L26 78 C22 78, 18 74, 18 70 Z' fill='%23f59e0b'/><path d='M32 44 L38 32 C40 28, 60 28, 62 32 L68 44 Z' fill='%23f59e0b'/><circle cx='32' cy='68' r='6' fill='%23ffffff'/><circle cx='68' cy='68' r='6' fill='%23ffffff'/><rect x='42' y='22' width='16' height='8' rx='2' fill='%23f59e0b'/><text x='50' y='28' font-size='6' font-weight='bold' fill='%23111827' text-anchor='middle'>TAXI</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23111827'/><path d='M20 58 C20 48, 30 42, 50 42 C70 42, 80 48, 80 58 L82 70 C82 74, 78 78, 74 78 L26 78 C22 78, 18 74, 18 70 Z' fill='%23f59e0b'/><path d='M32 44 L38 32 C40 28, 60 28, 62 32 L68 44 Z' fill='%23f59e0b'/><circle cx='32' cy='68' r='6' fill='%23ffffff'/><circle cx='68' cy='68' r='6' fill='%23ffffff'/><rect x='42' y='22' width='16' height='8' rx='2' fill='%23f59e0b'/><text x='50' y='28' font-size='6' font-weight='bold' fill='%23111827' text-anchor='middle'>TAXI</text></svg>">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { -webkit-tap-highlight-color: transparent; }
+        .touch-action { touch-action: manipulation; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen pb-12 font-sans antialiased">
+
+    <!-- Header -->
+    <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-50 shadow-md">
+        <div class="max-w-xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center font-black text-slate-900 text-xl shadow">
+                    <i class="fa-solid fa-car-side"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight text-white">HopOn Local</h1>
+                    <p class="text-xs text-amber-400 font-medium">Bonteheuwel & Surrounds Passenger Ride Request</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-xl mx-auto px-4 pt-4 space-y-4">
+
+        <!-- Banner Info -->
+        <div class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 flex items-start space-x-3">
+            <i class="fa-solid fa-circle-info text-amber-400 text-lg mt-0.5"></i>
+            <div class="text-xs text-slate-300">
+                <p class="font-bold text-amber-300 mb-0.5">Reliable Local Rides</p>
+                <p>Base Fare: R20 | R8 per km | Min Fare: R30 | Vangate Mall Local Special: R50 Cap</p>
+            </div>
+        </div>
+
+        <!-- Quick Destinations -->
+        <section class="bg-slate-800 rounded-2xl p-4 border border-slate-700/60 shadow-lg">
+            <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
+                <i class="fa-solid fa-location-dot text-amber-400 mr-1"></i> Quick Popular Destinations
+            </h2>
+            <div class="grid grid-cols-3 gap-2">
+                <button onclick="selectQuickDest('Bonteheuwel Local', 2.0, 30)" class="touch-action bg-slate-700/70 hover:bg-slate-700 border border-slate-600 rounded-xl p-2.5 text-center transition active:scale-95">
+                    <div class="text-xs text-slate-400 font-medium">Bht Internal</div>
+                    <div class="text-lg font-bold text-amber-400">R30</div>
+                </button>
+                <button onclick="selectQuickDest('Vangate Mall', 4.0, 50)" class="touch-action bg-slate-700/70 hover:bg-slate-700 border border-slate-600 rounded-xl p-2.5 text-center transition active:scale-95">
+                    <div class="text-xs text-slate-400 font-medium">Vangate Mall</div>
+                    <div class="text-lg font-bold text-amber-400">R50 <span class="text-[10px] text-slate-400 font-normal">(Cap)</span></div>
+                </button>
+                <button onclick="selectQuickDest('Cape Town CBD', 16.5, 140)" class="touch-action bg-slate-700/70 hover:bg-slate-700 border border-slate-600 rounded-xl p-2.5 text-center transition active:scale-95">
+                    <div class="text-xs text-slate-400 font-medium">Cape Town CBD</div>
+                    <div class="text-lg font-bold text-amber-400">R140</div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Booking Form -->
+        <section class="bg-slate-800 rounded-2xl p-4 border border-slate-700/60 shadow-lg space-y-4">
+            <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                <i class="fa-solid fa-route text-amber-400 mr-1"></i> Request Your Ride
+            </h2>
+
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">Your Name *</label>
+                    <input type="text" id="passengerName" placeholder="Enter your full name" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">Pickup Address / Street *</label>
+                    <input type="text" id="pickupAddr" placeholder="e.g. 123 Bluegum Street, Bonteheuwel" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">Destination Address *</label>
+                    <input type="text" id="destAddr" placeholder="e.g. Vangate Mall / Heideveld Station" oninput="calculateFare()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="text-xs font-medium text-slate-300">Estimated Distance (km)</label>
+                        <span class="text-[11px] text-slate-400">Rate: R20 Base + R8/km</span>
+                    </div>
+                    <input type="number" id="tripDistance" step="0.1" min="0" placeholder="e.g. 3.5" oninput="calculateFare()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+                </div>
+            </div>
+
+            <!-- Estimated Fare Card -->
+            <div class="bg-slate-900/90 rounded-xl p-4 border border-amber-500/30 space-y-3">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <div class="text-xs text-slate-400">Estimated Fare</div>
+                        <div class="text-3xl font-black text-amber-400" id="fareDisplay">R30.00</div>
+                        <div class="text-[10px] text-slate-400" id="ruleAppliedNotice">Minimum floor applied (R30)</div>
+                    </div>
+                </div>
+
+                <!-- Submit Local Dispatch Booking Button -->
+                <button onclick="sendDispatchBooking()" class="touch-action w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-3.5 px-4 rounded-xl shadow-lg transition active:scale-95 text-base flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-paper-plane text-xl"></i>
+                    <span>Request Ride</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        let calculatedFare = 30;
+        let isPresetOverride = false;
+
+        function calculateFare() {
+            if (isPresetOverride) return;
+
+            const distInput = document.getElementById('tripDistance').value;
+            const destInput = document.getElementById('destAddr').value.toLowerCase();
+            const distance = parseFloat(distInput) || 0;
+
+            const baseFee = 20;
+            const perKmRate = 8;
+            const minFare = 30;
+            const vangateCap = 50;
+
+            let calculated = baseFee + (distance * perKmRate);
+            let notice = "";
+
+            if (destInput.includes("vangate") || (destInput.includes("mall") && distance <= 5)) {
+                if (calculated > vangateCap) {
+                    calculated = vangateCap;
+                    notice = "Vangate Mall local cap applied (R50 max)";
+                }
+            }
+
+            if (calculated < minFare) {
+                calculated = minFare;
+                notice = "Minimum floor applied (R30)";
+            } else if (!notice) {
+                notice = `Standard Rate: R20 + (${distance}km × R8)`;
+            }
+
+            calculatedFare = Math.round(calculated);
+            document.getElementById('fareDisplay').innerText = "R" + calculatedFare + ".00";
+            document.getElementById('ruleAppliedNotice').innerText = notice;
+        }
+
+        function selectQuickDest(name, km, price) {
+            isPresetOverride = true;
+            document.getElementById('destAddr').value = name;
+            document.getElementById('tripDistance').value = km;
+            calculatedFare = price;
+            document.getElementById('fareDisplay').innerText = "R" + price + ".00";
+            document.getElementById('ruleAppliedNotice').innerText = `Preset Applied: ${name}`;
+            setTimeout(() => { isPresetOverride = false; }, 2000);
+        }
+
+        function sendDispatchBooking() {
+            const name = document.getElementById('passengerName').value.trim();
+            const pickup = document.getElementById('pickupAddr').value.trim();
+            const dest = document.getElementById('destAddr').value.trim();
+            const distance = document.getElementById('tripDistance').value.trim() || "N/A";
+
+            if (!name || !pickup || !dest) {
+                alert("Please fill in your Name, Pickup Address, and Destination.");
+                return;
+            }
+
+            // Save ride to local storage for the dispatch board
+            let rides = JSON.parse(localStorage.getItem('hopon_rides') || '[]');
+            rides.push({
+                id: Date.now(),
+                passenger: name,
+                pickup: pickup,
+                destination: dest,
+                distance: distance,
+                fare: calculatedFare,
+                timestamp: new Date().toLocaleTimeString()
+            });
+            localStorage.setItem('hopon_rides', JSON.stringify(rides));
+
+            alert('Booking sent straight to dispatch!');
+        }
+    </script>
+
+</body>
+</html>
