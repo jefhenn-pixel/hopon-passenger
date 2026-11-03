@@ -192,30 +192,24 @@
                 fare: calculatedFare
             };
 
-            // Send booking to Google Sheet API backend
+            // Send booking to Google Sheet API backend using text/plain (CORS safe)
             if (SCRIPT_URL) {
                 fetch(SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify(rideData)
-                }).catch(err => console.error("Error posting to sheet:", err));
+                })
+                .then(() => {
+                    alert('Booking submitted! Checking dispatch...');
+                })
+                .catch(err => {
+                    console.error("Error posting to sheet:", err);
+                    alert("Network error: " + err.message);
+                });
+            } else {
+                alert("Script URL not configured!");
             }
-
-            // Save ride to local storage for the dispatch board fallback
-            let rides = JSON.parse(localStorage.getItem('hopon_rides') || '[]');
-            rides.push({
-                id: Date.now(),
-                passenger: name,
-                pickup: pickup,
-                destination: dest,
-                distance: distance,
-                fare: calculatedFare,
-                timestamp: new Date().toLocaleTimeString()
-            });
-            localStorage.setItem('hopon_rides', JSON.stringify(rides));
-
-            alert('Booking sent straight to dispatch!');
 
             // Clear form fields
             document.getElementById('passengerName').value = '';
